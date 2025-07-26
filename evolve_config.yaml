@@ -1,0 +1,33 @@
+genome:
+  - model: mistralai/Mistral-Nemo-Base-2407
+  - model: nvidia/OpenReasoning-Nemotron-14B
+  - model: mrcuddle/NemoMix-Magcap-12B
+
+merge_method: task_arithmetic
+
+# task_arithmetic needs to know the "base", "intermediate", and "target" models
+# usually you'd set these here:
+base_model: mistralai/Mistral-Nemo-Base-2407
+target_model: mrcuddle/NemoMix-Magcap-12B
+intermediate_model: nvidia/OpenReasoning-Nemotron-14B
+
+# layer granularity (common: "block" or "model")
+layer_granularity: block
+
+# allow negative weights if you want more flexibility (usually true for task_arithmetic)
+allow_negative_weights: true
+
+# normalization
+normalize: true
+
+# tasks to evaluate on
+tasks:
+  - task: arc_challenge
+    weight: 1.0
+    metric: acc
+  - task: lambada
+    weight: -1.0
+    metric: ppl
+
+# output path (relative or absolute)
+output_model: ./evolve_results/output_model
