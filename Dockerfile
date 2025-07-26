@@ -5,6 +5,10 @@ FROM nvidia/cuda:12.1.0-runtime-ubuntu22.04
 RUN apt-get update && apt-get install -y \
     python3 python3-pip git \
  && rm -rf /var/lib/apt/lists/*
+# Add huggingface token to the container's cache config
+ARG HF_TOKEN
+RUN mkdir -p /root/.cache/huggingface && \
+    echo "{ \"token\": \"$HF_TOKEN\" }" > /root/.cache/huggingface/token
 
 # Upgrade pip
 RUN python3 -m pip install --upgrade pip
